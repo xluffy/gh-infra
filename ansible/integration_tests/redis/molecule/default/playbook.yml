@@ -1,0 +1,8 @@
+---
+- name: Converge
+  become: true
+  hosts: vg-ubuntu-18-igt-redis
+
+  roles:
+    - role: common
+    - role: redis

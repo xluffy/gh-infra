@@ -1,0 +1,54 @@
+#
+# Molecule doesn't support some config in cofig_options, but you still try to use env for set ansible config
+# https://github.com/ansible/molecule/issues/1039
+# https://github.com/ansible/molecule/pull/1125
+# Currently, disallowing the following options from being specified in Molecule's ansible.cfg.
+#   - roles_path
+#   - library
+#   - filter_plugins
+#
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+platforms:
+  - name: vg-ubuntu-18-igt-redis
+    box: ubuntu/bionic64
+    memory: 1024
+    groups:
+      - redis
+provisioner:
+  name: ansible
+  log: true
+  env:
+    ANSIBLE_ROLES_PATH: ../../../../roles
+  config_options:
+    defaults:
+      # roles_path: ../../../../roles
+      vault_password_file: ${MOLECULE_SCENARIO_DIRECTORY}/.vault_pass
+      callback_whitelist: profile_tasks, timer
+      stdout_callback: debug
+      gathering: smart
+    ssh_connection:
+      pipelining: True
+      control_path: /tmp/ansible-ssh-%%h-%%p-%%r
+  inventory:
+    links:
+      group_vars: ../../../../inventories/test/group_vars/
+  lint:
+    name: ansible-lint
+scenario:
+  name: default
+verifier:
+  name: testinfra
+  env:
+    PYTHONWARNINGS: "ignore:.*U.*mode is deprecated:DeprecationWarning"
+  lint:
+    name: flake8
+  options:
+    v: true
