@@ -1,4 +1,4 @@
 .PHONY: run
 
 run:
-	molecule test
+	molecule test --parallel --scenario-name default

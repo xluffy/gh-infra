@@ -15,6 +15,8 @@ platforms:
       - app
 provisioner:
   name: ansible
+  playbooks:
+    converge: ../playbook.yml
   log: true
   config_options:
     defaults:
@@ -31,6 +33,7 @@ scenario:
   name: default
 verifier:
   name: testinfra
+  directory: ../tests/
   env:
     PYTHONWARNINGS: "ignore:.*U.*mode is deprecated:DeprecationWarning"
   lint:
