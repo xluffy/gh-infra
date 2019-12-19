@@ -1,0 +1,16 @@
+# file: dev
+
+[gh-dev-mysql]
+gh-local-master ansible_host=127.0.0.1
+
+[gh-dev-redis]
+gh-local-redis ansible_host=127.0.0.1
+
+[all:children]
+mysql
+
+[mysql:children]
+gh-dev-mysql
+
+[redis:children]
+gh-dev-redis

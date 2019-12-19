@@ -1,0 +1,24 @@
+---
+redis_service: "queue"
+
+redis_bind_localhost: "false"
+redis_ip: "{{ ansible_host }}"
+redis_instances:
+  - port: 6371
+    service: "queue"
+    role: "master"
+    maxmemory: "{{ (ansible_memtotal_mb * 0.45 * 1024 * 1024) | int }}"
+    maxmemory_policy: noeviction
+    systemd_service: "redis-6371"
+
+redis_role: "master"
+
+redis_path_build: /usr/src/build
+redis_path_data: /var/lib/redis
+redis_path_conf: /etc/redis
+redis_path_log: /var/log/redis
+redis_path_pid: /var/run/redis
+redis_path_cache: /var/cache/redis
+
+redis_user: redis
+redis_group: redis

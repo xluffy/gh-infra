@@ -1,0 +1,10 @@
+#
+# Variables for install & config MySQL server
+#
+
+---
+mysql_repl_role: ""
+mysql_repl_master: ""
+
+mysql_bind_localhost: "yes"
+mysql_root_password: "{{ vault_mysql_root_password }}"

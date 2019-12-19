@@ -1,0 +1,8 @@
+---
+mysql_bind_localhost: "no"
+mysql_server_id: "2"
+mysql_repl_role: "slave"
+mysql_innodb_buffer_pool_size: "{{ (ansible_memtotal_mb * 0.7) | int }}M"
+
+mysql_bin_log_dir: "/data/mysql"
+mysql_log_bin: "{{ mysql_bin_log_dir }}/mysql-bin"

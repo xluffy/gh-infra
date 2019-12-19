@@ -1,0 +1,36 @@
+---
+redis_service: "caching"
+
+redis_bind_localhost: "false"
+redis_ip: "{{ ansible_host }}"
+redis_instances:
+  - port: 6371
+    service: "caching"
+    role: "master"
+    maxmemory: 4gb
+    maxmemory_policy: allkeys-lru
+    systemd_service: "redis-6371"
+  - port: 6372
+    service: "caching"
+    role: "master"
+    maxmemory: 16gb
+    maxmemory_policy: allkeys-lru
+    systemd_service: "redis-6371"
+
+redis_role: "master"
+
+redis_path_build: /usr/src/build
+redis_path_data: /var/lib/redis
+redis_path_conf: /etc/redis
+redis_path_log: /var/log/redis
+redis_path_pid: /var/run/redis
+redis_path_cache: /var/cache/redis
+
+redis_user: redis
+redis_group: redis
+
+redis_exporter_version: "1.3.1"
+redis_exporter_url: "https://github.com/oliver006/redis_exporter/releases/download/v{{ redis_exporter_version }}/redis_exporter-v{{ redis_exporter_version }}.linux-amd64.tar.gz"
+redis_exporter_file: "/usr/src/build/redis_exporter-v{{ redis_exporter_version }}.linux-amd64.tar.gz"
+redis_exporter_src_bin: "/usr/src/build/redis_exporter-v{{ redis_exporter_version }}.linux-amd64/redis_exporter"
+redis_exporter_dest_bin: "/usr/local/bin/redis_exporter"
