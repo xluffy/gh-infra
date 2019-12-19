@@ -27,3 +27,6 @@ out
 *.crt
 *.csr
 *.p7b
+
+# direnv
+.direnv
