@@ -1,0 +1,26 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Redis Exporter
+Wants=network-online.target
+After=network-online.target redis.service
+
+[Service]
+Type=simple
+User=redis_exporter
+Group=redis_exporter
+ExecStart=/usr/local/bin/redis_exporter -web.listen-address={{ redis_ip }}:9121
+
+SyslogIdentifier=redis_exporter
+Restart=always
+
+PrivateTmp=yes
+ProtectHome=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,43 @@
+#
+# Build redis
+#
+
+---
+- name: redis | download redis source
+  get_url:
+    url: "{{ redis_url }}{{ redis_version }}.tar.gz"
+    dest: "{{ redis_path_build }}"
+
+- name: redis | check if redis was extracted already
+  stat:
+    path: "{{ redis_path_build }}/{{ redis_version }}"
+  register: redis_extracted
+
+- name: redis | extract redis into {{ redis_path_build }}
+  unarchive:
+    src: "{{ redis_path_build }}/{{ redis_version }}.tar.gz"
+    dest: "{{ redis_path_build }}/"
+    remote_src: yes
+  when: not redis_extracted.stat.exists
+
+- name: redis | check if redis folder already exists
+  stat:
+    path: "{{ redis_path_build }}/redis"
+  register: redis
+
+- name: redis | create new redis folder
+  command: "cp -r {{ redis_version }} redis"
+  args:
+    chdir: "{{ redis_path_build }}"
+  when: not redis.stat.exists
+
+- name: redis | check if redis was installed already
+  stat:
+    path: /usr/local/bin/redis-server
+  register: redis_install
+
+- name: redis | make install redis
+  make:
+    chdir: "{{ redis_path_build }}/redis"
+    target: install
+  when: not redis_install.stat.exists

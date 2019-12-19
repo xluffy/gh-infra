@@ -1,0 +1,13 @@
+#
+# Main tasks:
+#   - Build Redis
+#   - OS Optimizations
+#   - Config & create Redis instance
+#
+
+---
+- include: build.yml
+- include: os.yml
+- include: config.yml
+- include: redis_exporter.yml
+  when: redis_exporter_enabled is defined and redis_exporter_enabled == "true"

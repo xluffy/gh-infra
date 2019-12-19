@@ -1,0 +1,19 @@
+---
+- name: systemd-reload
+  systemd:
+    daemon_reload: yes
+
+- name: restart "{{ item.systemd_service }}" service
+  systemd:
+    name: "{{ item.systemd_service }}"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+  with_items:
+    - "{{ redis_instances }}"
+
+- name: restart redis_exporter service
+  systemd:
+    name: redis_exporter
+    state: restarted
+    enabled: true

@@ -1,0 +1,10 @@
+#
+# OS Optimizations
+#
+
+---
+- name: redis | set vm.overcommit_memory to 1
+  sysctl:
+    name: vm.overcommit_memory
+    value: "1"
+    state: present

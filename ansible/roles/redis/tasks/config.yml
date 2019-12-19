@@ -1,0 +1,53 @@
+#
+# Config & create Redis instance
+#
+
+---
+- name: redis | create group
+  group:
+    name: "{{ redis_group }}"
+    state: present
+
+- name: redis | create user
+  user:
+    name: "{{ redis_user }}"
+    group: "{{ redis_group }}"
+    shell: /usr/sbin/nologin
+    home: "{{ redis_path_data }}"
+    create_home: no
+
+- name: redis | create other folders
+  file:
+    path: "{{ item }}"
+    owner: "{{ redis_user }}"
+    group: "{{ redis_group }}"
+    state: directory
+    mode: 0755
+  loop:
+    - "{{ redis_path_data }}"
+    - "{{ redis_path_conf }}"
+    - "{{ redis_path_log }}"
+    - "{{ redis_path_pid }}"
+    - "{{ redis_path_cache }}"
+
+- name: redis | generate systemd service
+  template:
+    src: redis.service.j2
+    dest: "/etc/systemd/system/redis-{{ item.port }}.service"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - "{{ redis_instances }}"
+  notify: systemd-reload
+
+- name: redis | generate config
+  template:
+    src: redis.conf.j2
+    dest: "/etc/redis/{{ item.port }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+  # notify: restart {{ item.systemd_service }} service
+  with_items:
+    - "{{ redis_instances }}"

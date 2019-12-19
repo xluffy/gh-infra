@@ -1,0 +1,82 @@
+{{ ansible_managed | comment  }}
+
+# Network config
+{% if redis_bind_localhost == "true" %}
+bind 127.0.0.1
+{% else %}
+bind 127.0.0.1 {{ redis_ip }}
+{% endif %}
+protected-mode yes
+port {{ item.port }}
+tcp-backlog 511
+timeout 0
+tcp-keepalive 300
+# General config
+daemonize no
+supervised systemd
+pidfile /var/run/redis/{{ item.port }}.pid
+loglevel warning
+logfile /var/log/redis/{{ item.port }}.log
+databases 16
+{% if item.service == "queue" %}
+# Snapshoting config
+save 900 1
+save 300 10
+save 60 10000
+stop-writes-on-bgsave-error yes
+rdbcompression yes
+rdbchecksum yes
+dbfilename {{ item.port }}.rdb
+dir /var/lib/redis
+# Append only mode
+appendonly no
+appendfilename "{{ item.port }}.aof"
+appendfsync everysec
+no-appendfsync-on-rewrite no
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 64mb
+aof-load-truncated yes
+aof-rewrite-incremental-fsync yes
+{% endif %}
+{% if item.role == "slave" %}
+# Replication config
+slaveof {{ item.master_ip }} {{ item.master_port }}
+slave-serve-stale-data yes
+slave-read-only yes
+repl-diskless-sync no
+repl-diskless-sync-delay 5
+repl-disable-tcp-nodelay no
+slave-priority 100
+{% endif %}
+# Client config
+maxclients 10000
+# Memory config
+# https://www.datadoghq.com/pdf/Understanding-the-Top-5-Redis-Performance-Metrics.pdf
+# - With snapshots, set maxmemory = 45% of available physical memory
+# - Without snapshots (but AOF), set maxmemory = 95% of available physical memory
+#
+maxmemory {{ item.maxmemory }}
+maxmemory-policy {{ item.maxmemory_policy }}
+# Lua scriptting
+lua-time-limit 5000
+# Slow log
+slowlog-log-slower-than 1000
+slowlog-max-len 1024
+# Latency monitor
+latency-monitor-threshold 0
+# Event notification
+notify-keyspace-events ""
+# Advanced config
+hash-max-ziplist-entries 512
+hash-max-ziplist-value 64
+list-max-ziplist-size -2
+list-compress-depth 0
+set-max-intset-entries 512
+zset-max-ziplist-entries 128
+zset-max-ziplist-value 64
+hll-sparse-max-bytes 3000
+activerehashing yes
+client-output-buffer-limit normal 0 0 0
+client-output-buffer-limit slave 256mb 64mb 60
+client-output-buffer-limit pubsub 32mb 8mb 60
+hz 10

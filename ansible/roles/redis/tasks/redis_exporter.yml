@@ -1,0 +1,59 @@
+#
+# redis_exporter: Exporter for redis metrics https://prometheus.io
+# https://github.com/oliver006/redis_exporter
+# just single redis_exporter instance for scraping all redis instance
+# Check issues:
+#   - https://github.com/oliver006/redis_exporter/issues/278
+#   - https://github.com/oliver006/redis_exporter/issues/320
+# Test with command:
+#   - curl http://10.20.11.51:9121/scrape?target=redis://10.20.11.51:6371
+#   - curl http://10.20.11.51:9121/scrape?target=redis://10.20.11.51:6372
+#
+
+---
+- name: redis | install redis_exporter
+  get_url:
+    url: "{{ redis_exporter_url }}"
+    dest: "{{ redis_exporter_file }}"
+
+- name: redis | extract redis_exporter.gz into /usr/src/build
+  unarchive:
+    src: "{{ redis_exporter_file }}"
+    dest: /usr/src/build
+    remote_src: yes
+
+- name: redis | create redis_exporter group
+  group:
+    name: redis_exporter
+    state: present
+
+- name: redis | create redis_exporter user
+  user:
+    name: redis_exporter
+    create_home: no
+    home: /var/lib/redis_exporter
+    shell: /usr/sbin/nologin
+    state: present
+    group: redis_exporter
+
+- name: redis | copy redis_exporter binary
+  copy:
+    src: "{{ redis_exporter_src_bin  }}"
+    dest: "{{ redis_exporter_dest_bin  }}"
+    owner: root
+    group: root
+    mode: 0755
+    remote_src: yes
+
+- name: redis | copy redis_exporter config files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: "redis_exporter.service.j2", dest: "/etc/systemd/system/redis_exporter.service" }
+  notify:
+    - systemd-reload
+    - restart redis_exporter service
