@@ -1,0 +1,8 @@
+#!/usr/bin/env ansible-playbook
+- name: debug | debug variables
+  hosts: all
+
+  tasks:
+    - name: debug | get all variables
+      debug:
+        var: hostvars[inventory_hostname] | to_nice_json
