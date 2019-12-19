@@ -1,0 +1,29 @@
+# Ansible
+.venv
+.vault_pass
+ansible_cache
+*.retry
+
+# Log
+*.log
+
+# local file
+*.pem
+*.key
+
+# Python
+*.pyc
+__pycache__
+
+# Temp
+out
+*.png
+
+# env
+.env
+
+# ssl/cert
+*.ca-bundle
+*.crt
+*.csr
+*.p7b
