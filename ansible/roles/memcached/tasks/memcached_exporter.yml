@@ -1,0 +1,52 @@
+#
+# memcached_exporter: Exporter for memcached metrics https://prometheus.io
+# https://github.com/prometheus/memcached_exporter
+#
+
+---
+- name: memcached | instal memcached_exporter
+  get_url:
+    url: "{{ memcached_exporter_url }}"
+    dest: "{{ memcached_exporter_file }}"
+
+- name: memcached | extract memcached_exporter.gz into /usr/src/build
+  unarchive:
+    src: "{{ memcached_exporter_file }}"
+    dest: /usr/src/build
+    remote_src: yes
+
+- name: memcached | create memcached_exporter group
+  group:
+    name: memcached_exporter
+    state: present
+
+- name: memcached | create memcached_exporter user
+  user:
+    name: memcached_exporter
+    create_home: no
+    home: /var/lib/memcached_exporter
+    shell: /usr/sbin/nologin
+    state: present
+    group: memcached_exporter
+
+- name: memcached | copy memcached_exporter binary
+  copy:
+    src: "{{ memcached_exporter_src_bin  }}"
+    dest: "{{ memcached_exporter_dest_bin  }}"
+    owner: root
+    group: root
+    mode: 0755
+    remote_src: yes
+
+- name: memcached | copy memcached_exporter config files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: "memcached_exporter.service.j2", dest: "/etc/systemd/system/memcached_exporter.service" }
+  notify:
+    - systemd-reload
+    - restart memcached_exporter service

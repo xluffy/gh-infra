@@ -1,0 +1,19 @@
+---
+
+- name: systemd-reload
+  systemd:
+    daemon_reload: yes
+
+- name: restart memcached service
+  systemd:
+    name: memcached
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+- name: restart memcached_exporter service
+  systemd:
+    name: memcached_exporter
+    state: restarted
+    enabled: yes
+    daemon_reload: yes

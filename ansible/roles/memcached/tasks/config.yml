@@ -1,0 +1,57 @@
+#
+# Create user and config Memcached
+#
+
+---
+- name: memcached | create group
+  group:
+    name: "{{ memcached_user }}"
+    state: present
+
+- name: memcached | create user
+  user:
+    name: "{{ memcached_user }}"
+    group: "{{ memcached_group }}"
+    shell: /usr/sbin/nologin
+    home: "{{ memcached_path_data }}"
+    create_home: no
+
+- name: memcached | create config folder
+  file:
+    path: "/etc/memcached"
+    owner: "{{ memcached_user }}"
+    group: "{{ memcached_group }}"
+    state: directory
+    mode: 0755
+
+- name: memcached | create data folder
+  file:
+    path: "{{ memcached_path_data }}"
+    owner: "{{ memcached_user }}"
+    group: "{{ memcached_group }}"
+    state: directory
+    mode: 0755
+
+- name: memcached | render systemd service
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: "memcached.service.j2", dest: "/etc/systemd/system/memcached.service" }
+  notify: systemd-reload
+
+- name: memcached | generate service config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: "memcached.conf.j2", dest: "{{ memcached_path_config }}" }
+    - { src: "memcached.j2", dest: "{{ memcached_path_config_default }}" }
+    - { src: "memcached.service.j2", dest: "/etc/systemd/system/memcached.service" }
+  notify: restart memcached service

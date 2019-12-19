@@ -1,0 +1,48 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: cnt-ubuntu-18-memcached
+    image: ubuntu:bionic
+    dockerfile: Dockerfile.j2
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /tmp
+      - /run
+    privileged: True
+    capabilities:
+      - SYS_ADMIN
+    groups:
+      - redis
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ../playbook.yml
+  log: true
+  config_options:
+    defaults:
+      callback_whitelist: profile_tasks, timer
+      stdout_callback: debug
+      gathering: smart
+    ssh_connection:
+      pipelining: True
+      control_path: /tmp/ansible-ssh-%%h-%%p-%%r
+  lint:
+    name: ansible-lint
+scenario:
+  name: docker
+verifier:
+  name: testinfra
+  directory: ../tests/
+  env:
+    PYTHONWARNINGS: "ignore:.*U.*mode is deprecated:DeprecationWarning"
+  lint:
+    name: flake8
+  options:
+    v: true

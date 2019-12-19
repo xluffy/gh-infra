@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+
+PORT="{{ memcached_port }}"
+USER={{ memcached_user }}
+MAXCONN="{{ memcached_max_conn }}"
+CACHESIZE="{{ memcached_cache_size }}"
+{% if memcached_ip == "127.0.0.1" %}
+OPTIONS="-l {{ memcached_ip }}"
+{% else %}
+OPTIONS="-l {{ memcached_ip }} -l 127.0.0.1"
+{% endif %}

@@ -1,0 +1,27 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  gather_facts: false
+  vars:
+    dep_packages:
+      - gcc
+      - libevent-dev
+      - build-essential
+  tasks:
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+      changed_when: false
+
+    - name: Install dependencies
+      apt:
+        name: "{{ dep_packages }}"
+        update_cache: yes
+        cache_valid_time: 86400
+
+    - name: Create build folder
+      file:
+        path: /usr/src/build
+        owner: root
+        group: root
+        state: directory

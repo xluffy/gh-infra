@@ -1,0 +1,22 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=memcached daemon
+After=network.target
+
+[Service]
+EnvironmentFile={{ memcached_path_config }}
+ExecStart=/usr/local/bin/memcached -p ${PORT} -U 0 -u ${USER} -m ${CACHESIZE} -c ${MAXCONN} $OPTIONS
+PrivateTmp=true
+ProtectSystem=full
+NoNewPrivileges=true
+PrivateDevices=true
+CapabilityBoundingSet=CAP_SETGID CAP_SETUID CAP_SYS_RESOURCE
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=memcached
+
+[Install]
+WantedBy=multi-user.target

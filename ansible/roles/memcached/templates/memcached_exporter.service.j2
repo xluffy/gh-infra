@@ -1,0 +1,26 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Memcached Exporter
+Wants=network-online.target
+After=network-online.target memcached.service
+
+[Service]
+Type=simple
+User=memcached_exporter
+Group=memcached_exporter
+ExecStart=/usr/local/bin/memcached_exporter --memcached.address={{ memcached_ip }}:{{ memcached_port }} --web.listen-address={{ memcached_ip }}:9150
+
+SyslogIdentifier=memcached_exporter
+Restart=always
+
+PrivateTmp=yes
+ProtectHome=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=yes
+
+[Install]
+WantedBy=multi-user.target

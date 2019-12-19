@@ -1,0 +1,95 @@
+#
+# Download & build Memcached
+#
+
+---
+- name: memcached | check memcached downloaded
+  stat:
+    path: "{{ memcached_path_build }}/{{ memcached_version  }}.tar.gz"
+  register: memcached_downloaded
+
+- name: memcached | download Memcached via wget
+  get_url:
+    url: "{{ memcached_url }}/{{ memcached_version }}.tar.gz"
+    dest: "{{ memcached_path_build }}"
+  when: not memcached_downloaded.stat.exists
+
+- name: memcached | check if Memcached was extracted already
+  stat:
+    path: "{{ memcached_path_build }}/{{ memcached_version }}"
+  register: memcached_output
+
+- name: memcached | extract Memcached into {{ memcached_path_build }}
+  unarchive:
+    src: "{{ memcached_path_build }}/{{ memcached_version }}.tar.gz"
+    dest: "{{ memcached_path_build }}"
+    remote_src: yes
+  when: not memcached_output.stat.exists
+
+- name: memcached | check if Memcached was installed already
+  stat:
+    path: /usr/local/bin/memcached
+  register: memcached_installed
+
+- name: memcached | prepare to install
+  command: ./configure
+  args:
+    chdir: "{{ memcached_path_build }}/{{ memcached_version }}"
+  when: not memcached_installed.stat.exists
+
+- name: memcached | make install Memcached
+  make:
+    chdir: "{{ memcached_path_build }}/{{ memcached_version }}"
+    target: install
+  when: not memcached_installed.stat.exists
+
+- name: memcached | install memcached cli
+  apt:
+    name: "{{ memcached_pkgs }}"
+    state: present
+    install_recommends: no
+
+- name: memcached | check memcache-tool downloaded
+  stat:
+    path: "{{ memcached_path_build  }}/{{ memcache_top_version  }}.tar.gz"
+  register: memcache_top_downloaded
+
+- name: memcached | download memcache-top
+  get_url:
+    url: "{{ memcache_top_url }}"
+    dest: "{{ memcached_path_build }}"
+  when: not memcache_top_downloaded.stat.exists
+
+- name: memcached | check if memcache-top was extracted
+  stat:
+    path: "{{ memcached_path_build }}/memcache-top-{{ memcache_top_version }}"
+  register: memcache_top_output
+
+- name: memcached | extract memcache-top
+  unarchive:
+    src: "{{ memcached_path_build }}/memcache-top-{{ memcache_top_version }}.tar.gz"
+    dest: "{{ memcached_path_build }}"
+    remote_src: yes
+  when: not memcache_top_output.stat.exists
+
+- name: memcached | check memcache-top is installed
+  stat:
+    path: "/usr/local/bin/memcache-top"
+  register: memcache_top_installed.stat.exists
+
+- name: memcached | install memcache-top
+  copy:
+    src: "{{ memcached_path_build }}/memcache-top-{{ memcache_top_version }}/memcache-top"
+    dest: "/usr/local/bin/memcache-top"
+    owner: root
+    group: root
+    mode: 0755
+    remote_src: yes
+
+- name: memcached | install memcached-tool-ng
+  copy:
+    src: memcached-tool-ng
+    dest: "/usr/local/bin/memcached-tool-ng"
+    owner: root
+    group: root
+    mode: 0755

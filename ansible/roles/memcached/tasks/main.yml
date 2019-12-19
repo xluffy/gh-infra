@@ -1,0 +1,10 @@
+#
+# Main tasks:
+#   - Download and build memcached
+#   - Config Memcached
+#
+
+---
+- include: build.yml
+- include: config.yml
+- include: memcached_exporter.yml

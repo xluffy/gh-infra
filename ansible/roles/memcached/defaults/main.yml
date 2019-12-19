@@ -1,0 +1,35 @@
+---
+memcached_url: "http://www.memcached.org/files"
+memcached_version: "memcached-1.5.16"
+
+memcached_user: memcached
+memcached_group: memcached
+memcached_path_build: /usr/src/build
+memcached_path_data: /var/lib/memcached
+memcached_path_config_default: "/etc/default/memcached"
+memcached_path_config: "/etc/memcached/memcached.conf"
+
+memcached_enable: "yes"
+memcached_ip: "{{ ansible_host }}"
+memcached_port: 11211
+memcached_max_conn: 4096
+memcached_cache_size: 4096
+
+#
+# https://packages.ubuntu.com/bionic/libmemcached11 -> C and C++ client library to the memcached server
+# https://packages.ubuntu.com/bionic/libs/libmemcached-tools -> Commandline tools for talking to memcached via libmemcached (memcstat, memcdump ...)
+# https://packages.ubuntu.com/bionic/libmemcachedutil2 -> library implementing connection pooling for libmemcached
+#
+memcached_pkgs:
+  - libmemcached-tools
+  - libmemcached11
+  - libmemcachedutil2
+
+memcache_top_version: "0.7"
+memcache_top_url: "https://github.com/eculver/memcache-top/archive/v{{ memcache_top_version }}.tar.gz"
+
+memcached_exporter_version: "0.5.0"
+memcached_exporter_url: "https://github.com/prometheus/memcached_exporter/releases/download/v{{ memcached_exporter_version }}/memcached_exporter-{{ memcached_exporter_version }}.linux-amd64.tar.gz"
+memcached_exporter_file: "/usr/src/build/memcached_exporter-{{ memcached_exporter_version }}.linux-amd64.tar.gz"
+memcached_exporter_src_bin: "/usr/src/build/memcached_exporter-{{ memcached_exporter_version }}.linux-amd64/memcached_exporter"
+memcached_exporter_dest_bin: "/usr/local/bin/memcached_exporter"
