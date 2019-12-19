@@ -1,0 +1,101 @@
+---
+uninstall_packages:
+  - accountsservice
+  - acpid
+  - apparmor
+  - at
+  - liblxc1
+  - lxc-common
+  - lxcfs
+  - lxd
+  - lvm2
+  - mdadm
+  - snapd
+
+install_packages:
+  - apt-transport-https
+  - apt-utils
+  - aptitude
+  - autoconf
+  - automake
+  - bash-completion
+  - build-essential
+  - curl
+  - dialog
+  - dnsutils
+  - gcc
+  - git
+  - git-core
+  - htop
+  - iotop
+  - iputils-ping
+  - jq
+  - keychain
+  - libacl1-dev
+  - libaio1
+  - libaio-dev
+  - libcurl4-openssl-dev
+  - libevent-dev
+  - libffi-dev
+  - libgdbm-dev
+  - liblzo2-dev
+  - libmcrypt-dev
+  - libncurses5-dev
+  - libpcre3
+  - libpcre3-dev
+  - libreadline6-dev
+  - libsqlite3-dev
+  - libssl-dev
+  - libtool
+  - libxml2-dev
+  - libyaml-dev
+  - locales
+  - locate
+  - make
+  - man
+  - mtr-tiny
+  - nano
+  - ncdu
+  - net-tools
+  - ngrep
+  - ntpdate
+  - openjdk-8-jre-headless
+  - openssh-server
+  - pkg-config
+  - pv
+  - python3-software-properties
+  - python3-pip
+  - python3-setuptools
+  - python3-dev
+  - rsync
+  - software-properties-common
+  - secure-delete
+  - sqlite3
+  - sudo
+  - sysstat
+  - telnet
+  - tmux
+  - traceroute
+  - tree
+  - tzdata
+  - unattended-upgrades
+  - uuid-dev
+  - vim
+  - wget
+  - zlib1g-dev
+
+node_exporter_url: "https://github.com/prometheus/node_exporter/releases/download/v0.18.0/node_exporter-0.18.0.linux-amd64.tar.gz"
+node_exporter_file: "/usr/src/build/node_exporter-0.18.0.linux-amd64.tar.gz"
+node_exporter_src_bin: "/usr/src/build/node_exporter-0.18.0.linux-amd64/node_exporter"
+node_exporter_dest_bin: "/usr/local/bin/node_exporter"
+
+bat_version: "0.12.1"
+bat_url: "https://github.com/sharkdp/bat/releases/download/v{{ bat_version }}/bat_{{ bat_version }}_amd64.deb"
+
+ripgrep_version: "11.0.2"
+ripgrep_url: "https://github.com/BurntSushi/ripgrep/releases/download/{{ ripgrep_version }}/ripgrep_{{ ripgrep_version }}_amd64.deb"
+
+quang_ssh_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQD1GMdEm9BlnWqbaF2oDQKLESSLMfSfgnKcR5JEIfzU2i9/D1B18tviNwzCwa/rJynJ/jETo5DhNtlT1xnttBCzHRfsJIYVE8DGIdTl2dkvkltJrmNMVGiUjlYZ5eRJc2MXi29p2tBIkHt+5EPIdOa3xvfZLYisMn9yis6CLZNH4K6Pbd5U/OJkok0WS+klYydrTcg2Y+SBffIDyTq3QiqdeHX+vxPGH1gMSpc2RuipXyjXESjpzzpc8gPEYUmPEbJ26mWg2aFmibznDnPL3RC4gp+lfHe4Fg5D2PCEgV7a+ag1qm2zXGhrt06LRebkfYVfKrH8nunkoo0iNFud3lrrV0hcJ9grgMZAU9UQ7Y9yNa2uQ3tyWdqH4klk667qh8cRgnoaw4VoaJnpWihJn3FP3ewHsu4nEnky1txkITwKmNQfqDyuApoVofSckuIrRyxh+PZCbLz9yLHvVulIdVsjxX91l6NolvmypfZuwp44HlfIRsmqlStaop9awe6KXuV453EX8eFuSwsmQ4/5tvelYHAxJ9OUrvGP/dbW/NSziAMauuutrUOKcsFPD1Ylj9vo1YKMbqqAGAhavcNhram61sO34okIRRM6vF9Sl9Oe5gPgun7Ho6FH7cl0SKidKA2jX5dJ74bAZOLI/bOvkLDMnBlKctilHI3Q6zJlZJC9rw=="
+
+sysctl:
+  net_ipv4_ip_forward: 0

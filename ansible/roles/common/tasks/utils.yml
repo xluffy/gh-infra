@@ -1,0 +1,16 @@
+#
+# Intall some utils for boosting productivity
+#
+
+---
+- name: common | install bat - a cat clone
+  apt:
+    deb: "{{ bat_url }}"
+    state: present
+    install_recommends: no
+
+- name: common | install ripgrep - a replace grep
+  apt:
+    deb: "{{ ripgrep_url }}"
+    state: present
+    install_recommends: no

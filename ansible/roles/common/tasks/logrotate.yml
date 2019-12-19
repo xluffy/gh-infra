@@ -1,0 +1,11 @@
+#
+# Logrotate
+#
+---
+- name: common | config global logrotate
+  template:
+    src: logrotate.conf.j2
+    dest: /etc/logrotate.conf
+    owner: root
+    group: root
+    mode: 0644

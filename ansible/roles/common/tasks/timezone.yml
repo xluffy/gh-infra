@@ -1,0 +1,10 @@
+#
+# > timedatectl set-timezone Zone/SubZone
+# This will create a symlink that points to a zone info
+# https://wiki.archlinux.org/index.php/System_time#Time_zone
+#
+
+---
+- name: common | set timezone
+  timezone:
+    name: America/Los_Angeles

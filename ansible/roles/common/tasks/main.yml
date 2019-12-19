@@ -1,0 +1,32 @@
+#
+# Main tasks:
+#   - apt task
+#   - config server (hostname, tz, systemd ....)
+#   - users (create user, sudo, profile)
+#   - package (basic packages + build tool + monitoring tool)
+#
+
+---
+- include: apt.yml
+- include: hostname.yml
+- include: locale.yml
+- include: timezone.yml
+- include: limit.yml
+- include: sysctl.yml
+- include: journald.yml
+- include: systemd.yml
+- include: hugepage.yml
+- include: logrotate.yml
+- include: sshd.yml
+- include: hardening.yml
+- include: other.yml
+
+- include: users.yml
+- include: sudo.yml
+
+- include: build.yml
+- include: packages.yml
+- include: chrony.yml
+- include: ps_mem.yml
+- include: utils.yml
+- include: node_exporter.yml

@@ -1,0 +1,12 @@
+#
+# Allow sudo for users in msystem group
+#
+
+---
+- name: common | allow users in msystem group
+  template:
+    src: gh-system.j2
+    dest: /etc/sudoers.d/gh-system
+    owner: root
+    group: root
+    mode: 0640

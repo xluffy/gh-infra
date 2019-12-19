@@ -1,0 +1,63 @@
+#
+# node_exporter: Exporter for machine metrics https://prometheus.io
+# https://github.com/prometheus/node_exporter
+#
+
+---
+- name: common | instal node_exporter
+  get_url:
+    url: "{{ node_exporter_url }}"
+    dest: "{{ node_exporter_file }}"
+
+- name: common | extract node_exporter.gz into /usr/src/build
+  unarchive:
+    src: "{{ node_exporter_file }}"
+    dest: /usr/src/build
+    remote_src: yes
+
+- name: common | create node_exporter group
+  group:
+    name: node_exporter
+    state: present
+
+- name: common | copy node_exporter binary
+  copy:
+    src: "{{ node_exporter_src_bin  }}"
+    dest: "{{ node_exporter_dest_bin  }}"
+    owner: root
+    group: root
+    mode: 0755
+    remote_src: yes
+
+- name: common | create node_exporter user
+  user:
+    name: node_exporter
+    create_home: no
+    home: /var/lib/node_exporter
+    shell: /usr/sbin/nologin
+    state: present
+    group: node_exporter
+
+- name: common | create node_exporter data dir
+  file:
+    path: /var/lib/node_exporter
+    state: directory
+    owner: node_exporter
+    group: node_exporter
+    mode: 0755
+
+- name: common | copy node_exporter config files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: "node_exporter.service.j2", dest: "/etc/systemd/system/node_exporter.service" }
+    - { src: "node_exporter.j2", dest: "/etc/default/node_exporter" }
+  notify:
+    - systemd-reload
+    - restart node_exporter service
+  tags:
+    - c_render_node_exporter_config

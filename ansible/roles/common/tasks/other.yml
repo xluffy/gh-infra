@@ -1,0 +1,9 @@
+#
+# Update default program on server
+#
+
+---
+- name: common | set vim is default editor
+  alternatives:
+    name: editor
+    path: /usr/bin/vim.basic

@@ -1,0 +1,13 @@
+#
+# ps_mem: A utility to accurately report the in core memory usage for a program
+# https://github.com/pixelb/ps_mem
+# Render from template, workaround for python3, default python3 in Ubuntu 18.04
+
+---
+- name: common | install ps_mem
+  template:
+    src: ps_mem.py.j2
+    dest: /usr/local/bin/ps_mem
+    mode: 0755
+    owner: root
+    group: root

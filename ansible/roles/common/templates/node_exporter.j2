@@ -1,0 +1,3 @@
+{{ ansible_managed | comment }}
+
+ARGS="--collector.filesystem.ignored-mount-points="^/(sys|proc|dev)($|/)" --collector.cpu --collector.cpufreq --collector.diskstats --collector.filesystem --collector.loadavg --collector.meminfo --collector.mountstats --collector.netstat --collector.netclass --collector.netdev --collector.ntp --collector.tcpstat --collector.xfs --collector.vmstat --collector.cpu --collector.mdadm --collector.zfs"

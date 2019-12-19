@@ -1,0 +1,16 @@
+#
+# create directory for compiling package
+#
+
+---
+- name: common | create directory compiling
+  file:
+    path: /usr/src/build
+    state: directory
+
+- name: common | create module if app layer
+  file:
+    path: /usr/src/build/modules
+    state: directory
+  when: >
+    inventory_hostname in groups.app | default([])

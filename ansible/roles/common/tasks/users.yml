@@ -1,0 +1,110 @@
+#
+# Create group/user for running application (if in app group)
+# Alway create user for ops guys
+#
+
+---
+- name: common | create deployment group
+  group:
+    name: deploy
+    state: present
+  when: >
+    inventory_hostname in groups.app | default([])
+
+- name: common | create deployment user
+  user:
+    name: deploy
+    create_home: yes
+    state: present
+    group: deploy
+    comment: "Deployer user"
+    shell: "/bin/bash"
+  when: >
+    inventory_hostname in groups.app | default([])
+
+- name: common | check .ssh dir is exist
+  stat:
+    path: /home/deploy/.ssh
+  register: dir_deploy_ssh
+  when: >
+    inventory_hostname in groups.app | default([])
+
+- name: common | create .ssh directory
+  file:
+    path: /home/deploy/.ssh
+    owner: deploy
+    group: deploy
+    mode: 0700
+    state: directory
+  when: >
+    inventory_hostname in groups.app | default([])
+    and
+    not dir_deploy_ssh.stat.exists
+
+- name: common | copy pub/priv key to deploy user
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: deploy
+    group: deploy
+    mode: 0400
+  loop:
+    - { src: "id_rsa.pub.vault", dest: "/home/deploy/.ssh/id_rsa.pub" }
+    - { src: "id_rsa.pub.vault", dest: "/home/deploy/.ssh/authorized_keys" }
+    - { src: "id_rsa.vault", dest: "/home/deploy/.ssh/id_rsa" }
+  when: >
+    inventory_hostname in groups.app | default([])
+
+- name: common | copy bash aliases/vimrc config for deploy user
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: deploy
+    group: deploy
+    mode: 0644
+  loop:
+    - { src: "bash_aliases.j2", dest: "/home/deploy/.bash_aliases" }
+    - { src: "vimrc.j2", dest: "/home/deploy/.vimrc" }
+  when: >
+    inventory_hostname in groups.app | default([])
+
+- name: common | create gh-system group
+  group:
+    name: gh-system
+    state: present
+
+- name: common | create personal group
+  group:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - quang
+
+- name: common | create ops users
+  user:
+    name: "{{ item }}"
+    create_home: yes
+    state: present
+    groups: "gh-system,{{ item }}"
+    comment: "Ops guy users"
+    shell: "/bin/bash"
+    append: yes
+  loop:
+    - quang
+
+- name: common | set authorized key for quang users
+  authorized_key:
+    user: quang
+    state: present
+    key: "{{ quang_ssh_public_key }}"
+
+- name: common | copy bash aliases/vimrc config for quang
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: quang
+    group: quang
+    mode: 0644
+  loop:
+    - { src: "bash_aliases.j2", dest: "/home/quang/.bash_aliases" }
+    - { src: "vimrc.j2", dest: "/home/quang/.vimrc" }

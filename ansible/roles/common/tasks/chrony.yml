@@ -1,0 +1,33 @@
+#
+# Install chrony, sync to time service of AWS
+# https://aws.amazon.com/blogs/aws/keeping-time-with-amazon-time-sync-service
+#
+
+---
+- name: common | install chrony
+  apt:
+    name: chrony
+    state: present
+    install_recommends: no
+
+- name: common | check if a chrony config file exists
+  stat:
+    path: /ect/chrony/chrony.conf
+  register: chrony_file
+
+- name: common | backup original chrony config
+  copy:
+    src: /etc/chrony/chrony.conf
+    dest: /etc/chrony/chrony.conf.org
+    remote_src: yes
+  when: >
+    chrony_file.stat.exists
+
+- name: common | create new chrony config
+  template:
+    src: chrony.conf.j2
+    dest: /etc/chrony/chrony.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart chrony service
