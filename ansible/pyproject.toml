@@ -1,11 +1,13 @@
 [tool.poetry]
-name = "ansible"
+name = "gh-infra"
 version = "0.1.0"
 description = "Ansible provisioning gh-infra"
 authors = ["xluffy <xquang.foss@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+ansible = "2.8.7"
+molecule = "2.22"
 ansible-generator = "2.0.0"
 ansible-lint = "4.1.0"
 mccabe = "0.6.1"
