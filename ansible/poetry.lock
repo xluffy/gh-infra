@@ -401,7 +401,7 @@ description = "Library for writing distributed self-replicating programs."
 name = "mitogen"
 optional = false
 python-versions = "*"
-version = "0.2.7"
+version = "0.2.9"
 
 [[package]]
 category = "main"
@@ -953,7 +953,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pathlib2", "contextlib2", "unittest2"]
 
 [metadata]
-content-hash = "729343cafb25bbeecaa784e4975cacc6ed1f251cbd6c2071c097d0a80479bab5"
+content-hash = "a7a713e3a071181dc8bae106f25de0312edf82dce2574212328df9acebf44cc8"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1183,7 +1183,7 @@ mccabe = [
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
 ]
 mitogen = [
-    {file = "mitogen-0.2.7.tar.gz", hash = "sha256:c2dd28d6b964699822455f6c91acedc16324913586837f046a76e2e4ac1d716c"},
+    {file = "mitogen-0.2.9.tar.gz", hash = "sha256:76cb9afef92596818a4639afb2a0bb0384ce7b6699b353af55662057b08b1e57"},
 ]
 molecule = [
     {file = "molecule-2.22-py2.py3-none-any.whl", hash = "sha256:12fa4231ed69c6e7f50432588eaace36cea917a8c73c1751269ce55df32ced24"},
