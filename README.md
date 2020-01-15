@@ -8,6 +8,7 @@ gh-infra
 ```
 > brew install pyenv
 > brew install direnv
+> brew install pre-commit
 ```
 - Install python3.7.2 with pyenv
 
