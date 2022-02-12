@@ -1,0 +1,13 @@
+---
+- name: common | render uptimed service config
+  template:
+    src: uptimed.conf.j2
+    dest: /etc/uptimed.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart uptimed service
+  tags:
+    - r_common_based
+    - r_common_uptimed

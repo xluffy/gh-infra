@@ -1,0 +1,32 @@
+#
+# create directory for compiling package
+#
+
+---
+- name: common | create directory compiling
+  file:
+    path: /usr/src/build
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  tags:
+    - r_common_based
+    - r_common_build
+
+- name: common | create module if app layer
+  file:
+    path: /usr/src/build/modules
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  when: >
+    inventory_hostname in groups.app | default([])
+    or
+    inventory_hostname in groups.api | default([])
+    or
+    inventory_hostname in groups.web | default([])
+  tags:
+    - r_common_based
+    - r_common_build

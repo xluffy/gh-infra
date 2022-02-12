@@ -1,0 +1,4 @@
+# Global variable use for all environments
+
+---
+ansible_python_interpreter: /usr/bin/python3

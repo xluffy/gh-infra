@@ -1,0 +1,17 @@
+#
+# Journal is a logging system of systemd
+# https://wiki.archlinux.org/index.php/Systemd/Journal
+#
+
+---
+- name: common | config journald logging
+  template:
+    src: journald.conf.j2
+    dest: /etc/systemd/journald.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart systemd-journald service
+  tags:
+    - r_common_based
+    - r_common_journald

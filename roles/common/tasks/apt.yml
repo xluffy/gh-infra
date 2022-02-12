@@ -1,0 +1,20 @@
+#
+# Just update APT cache + update all package when init server
+#
+
+---
+- name: common | update APT package cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+  tags:
+    - r_common_based
+    - r_common_apt
+
+- name: common | update all packages to the latest version
+  apt:
+    name: '*'
+    state: present
+  tags:
+    - r_common_based
+    - r_common_apt

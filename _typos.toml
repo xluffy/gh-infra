@@ -1,0 +1,6 @@
+[default.extend-words]
+teh = "teh"
+hdinsight = "hdinsight"
+
+[files]
+extend-exclude = ["misc/*.json"]

@@ -1,0 +1,24 @@
+#
+# Redis latency problem: https://redis.io/topics/latency
+# Mongod THP: https://docs.mongodb.com/manual/tutorial/transparent-huge-pages
+# KeyDB: https://docs.keydb.dev/docs/latency/
+#
+
+---
+- name: common | config hugepage
+  template:
+    src: rc.local.j2
+    dest: /etc/rc.local
+    owner: root
+    group: root
+    mode: 0755
+  notify: enabled rc.local service
+  when: >
+    inventory_hostname in groups.redis | default([])
+    or
+    inventory_hostname in groups.mongodb | default([])
+    or
+    inventory_hostname in groups.keydb | default([])
+  tags:
+    - r_common_based
+    - r_common_hugepage

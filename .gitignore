@@ -1,0 +1,46 @@
+# OS X
+.history
+.DS_Store
+
+# Ansible
+.venv
+.vault_pass
+ansible_cache
+*.retry
+
+# Log
+*.log
+
+# vagrant
+.vagrant
+
+# local file
+credentials
+config
+*.pem
+*.key
+
+# Python
+*.pyc
+__pycache__
+
+# Temp
+out
+*.png
+
+# compress files
+*.tar
+*.tar.gz
+*.tar.xz
+*.gz
+
+# env
+.env
+
+# ssl/cert
+*.ca-bundle
+*.crt
+*.csr
+*.p7b
+
+secrets/id_ed25519

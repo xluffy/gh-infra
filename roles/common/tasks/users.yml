@@ -1,0 +1,56 @@
+#
+# Create group/user for running application (if in app group)
+# Always create user for ops guys
+
+---
+- name: common | create deployment group
+  group:
+    name: deploy
+    state: present
+  when: >
+    inventory_hostname in groups.app | default([])
+    or
+    inventory_hostname in groups.api | default([])
+    or
+    inventory_hostname in groups.web | default([])
+  tags:
+    - r_common_based
+    - r_common_users
+
+- name: common | create deployment user
+  user:
+    name: deploy
+    create_home: yes
+    state: present
+    group: deploy
+    comment: "Deployer user"
+    shell: "/bin/bash"
+  when: >
+    inventory_hostname in groups.app | default([])
+    or
+    inventory_hostname in groups.api | default([])
+    or
+    inventory_hostname in groups.web | default([])
+  tags:
+    - r_common_based
+    - r_common_users
+
+- name: common | copy bash aliases/vimrc config for deploy user
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: deploy
+    group: deploy
+    mode: 0644
+  loop:
+    - { src: "bash_aliases.j2", dest: "/home/deploy/.bash_aliases" }
+    - { src: "vimrc.j2", dest: "/home/deploy/.vimrc" }
+  when: >
+    inventory_hostname in groups.app | default([])
+    or
+    inventory_hostname in groups.api | default([])
+    or
+    inventory_hostname in groups.web | default([])
+  tags:
+    - r_common_based
+    - r_common_users

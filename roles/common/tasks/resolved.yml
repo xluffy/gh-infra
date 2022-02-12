@@ -1,0 +1,33 @@
+#
+# https://stackoverflow.com/questions/11020027/dns-caching-in-linux
+# Default on Linux, there is no OS-level DNS caching (Check out glibc source
+# code). So when your application call a service (such as Pusher), need to query
+# a Public DNS (8.8.8.8) for resolving a domain (api.pusher.com). Time to query
+# public DNS so long.
+#
+# That a reason you should maintain a local DNS for caching DNS query, help
+# quickly response resolved domain.
+#
+# So many programming language use glibc for getaddrinfo(), with every request
+# to external service, need a time for resolve domain.
+#
+# https://www.ctrl.blog/entry/systemd-resolved.html
+#
+# For KISS, I try to use systed-resolved, but for strong security and privacy,
+# you can you Knot Resolver or Unbound.
+#
+# Setting NodeLocal DNSCache from GCP https://cloud.google.com/kubernetes-engine/docs/how-to/nodelocal-dns-cache#gcloud
+#
+---
+- name: common | render systemd-resolved config
+  template:
+    src: resolved.conf.j2
+    dest: /etc/systemd/resolved.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart systemd-resolved service
+  tags:
+    - r_common_based
+    - r_common_resolved

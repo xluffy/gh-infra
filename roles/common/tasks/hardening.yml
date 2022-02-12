@@ -1,0 +1,63 @@
+#
+# Logging all command run on server
+# Just append to log, don't allow delete/remove
+#
+
+---
+- name: common | check if a command log file exists
+  stat:
+    path: /var/log/commands.log
+  register: commands_file
+  tags:
+    - r_common_based
+    - r_common_hardening
+
+- name: common | create command log file
+  file:
+    path: /var/log/commands.log
+    state: touch
+    mode: 0600
+    owner: syslog
+    group: syslog
+  when: >
+    not commands_file.stat.exists
+  tags:
+    - r_common_based
+    - r_common_hardening
+
+- name: common | check attr flags
+  stat:
+    path: "{{ item }}"
+  register: attr
+  loop:
+    - /var/log/commands.log
+    - /var/log/btmp
+    - /var/log/wtmp
+  tags:
+    - r_common_based
+    - r_common_hardening
+
+- name: common | set attribute
+  file:
+    path: "{{ item.item }}"
+    attr: +a
+  when: item.stat.attr_flags != "ae"
+  loop: "{{ attr.results }}"
+  tags:
+    - r_common_based
+    - r_common_hardening
+
+- name: common | copy hardening config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: 'bash.bashrc.j2', dest: '/etc/bash.bashrc' }
+    - { src: '30-bash.conf.j2', dest: '/etc/rsyslog.d/30-bash.conf' }
+  notify: restart rsyslog service
+  tags:
+    - r_common_based
+    - r_commo_hardening

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# small tool for bench response time of local dns (caching dns at local server)
+# vs public dns
+
+_log() {
+  printf "\x1B[2;32m"
+  echo "[LOG]" "[$(date +'%Y-%m-%d %H:%M:%S')]:" "$*"
+  printf "\x1B[0m"
+}
+
+_die() {
+  printf "\x1B[2;31m"
+  echo "[ERROR]" "[$(date +'%Y-%m-%d %H:%M:%S')]:" "$*" >&2
+  exit 1
+  printf "\x1B[0m"
+}
+
+_local_dns() {
+  for i in {1..100}; do
+    time dig @127.0.0.53 skymavis.com;
+  done 2>&1 | grep ^real | sed -e s/.*m// | awk '{sum += $1} END {print sum / NR}'
+}
+
+_public_dns() {
+  for j in {1..100}; do
+    time dig @1.1.1.1 skymavis.com;
+  done 2>&1 | grep ^real | sed -e s/.*m// | awk '{sum += $1} END {print sum / NR}'
+}
+
+main() {
+  _t_local_dns=$(_local_dns)
+  _log "Time for resolving 100 DNS query to local: ${_t_local_dns}s"
+  _t_public_dns=$(_public_dns)
+  _log "Time for resolving 100 DNS query to public: ${_t_public_dns}s"
+
+  echo "${_t_public_dns} / ${_t_local_dns}" | bc
+}
+
+main "$@"

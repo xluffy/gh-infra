@@ -1,0 +1,82 @@
+#
+# sysctl is a tool for changing kernel parameters at runtime
+# systemd only applies settings from /etc/sysctl.d/*.conf and
+# /usr/lib/sysctl.d/*.conf
+# https://wiki.archlinux.org/index.php/Sysctl
+#
+
+---
+- name: common | config system security options
+  template:
+    src: 10-system-security.conf.j2
+    dest: /etc/sysctl.d/10-system-security.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart systemd-sysctl service
+  tags:
+    - r_common_based
+    - r_common_sysctl
+
+- name: common | config system memory options
+  template:
+    src: 10-system-memory.conf.j2
+    dest: /etc/sysctl.d/10-system-memory.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart systemd-sysctl service
+  tags:
+    - r_common_based
+    - r_common_sysctl
+
+- name: common | config network security options
+  template:
+    src: 10-network-security.conf.j2
+    dest: /etc/sysctl.d/10-network-security.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart systemd-sysctl service
+  tags:
+    - r_common_based
+    - r_common_sysctl
+
+- name: common | config network perf options
+  template:
+    src: 10-network-perf.conf.j2
+    dest: /etc/sysctl.d/10-network-perf.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart systemd-sysctl service
+  tags:
+    - r_common_based
+    - r_common_sysctl
+
+- name: common | set net.core.somaxconn
+  sysctl:
+    name: net.core.somaxconn
+    value: "32768"
+    state: present
+  tags:
+    - r_common_based
+    - r_common_sysctl
+
+- name: common | set vm.min_free_kbytes
+  sysctl:
+    name: vm.min_free_kbytes
+    value: "131072"
+    state: present
+  tags:
+    - r_common_based
+    - r_common_sysctl
+
+- name: common | set kernel.pid_max
+  sysctl:
+    name: kernel.pid_max
+    value: "65535"
+    state: present
+  tags:
+    - r_common_based
+    - r_common_sysctl

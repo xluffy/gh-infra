@@ -1,0 +1,22 @@
+#
+# https://docs.ansible.com/ansible/latest/modules/hostname_module.html
+# Note, this module does NOT modify /etc/hosts. You need to modify it yourself
+# using other modules like template or replace.
+#
+---
+- name: common | config hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+  tags:
+    - r_common_based
+    - r_common_hostname
+
+- name: common | config hostname in /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    state: present
+    regexp: "^{{ ansible_default_ipv4.address }}.+{{ ansible_fqdn }}$"
+    line: "{{ ansible_default_ipv4.address }} {{ ansible_fqdn }}"
+  tags:
+    - r_common_based
+    - r_common_hostname

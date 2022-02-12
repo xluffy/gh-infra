@@ -1,0 +1,34 @@
+#
+# Main tasks:
+#   - apt task
+#   - config server (hostname, tz, systemd ....)
+#   - users (create user, sudo, profile)
+#   - package (basic packages + build tool + monitoring tool)
+#
+
+---
+- import_tasks: apt.yml
+- import_tasks: hostname.yml
+- import_tasks: locale.yml
+- import_tasks: timezone.yml
+- import_tasks: resolved.yml
+- import_tasks: limit.yml
+- import_tasks: sysctl.yml
+- import_tasks: journald.yml
+- import_tasks: systemd.yml
+- import_tasks: hugepage.yml
+- import_tasks: logrotate.yml
+- import_tasks: sshd.yml
+- import_tasks: hardening.yml
+- import_tasks: editor.yml
+- import_tasks: uptimed.yml
+
+- import_tasks: root.yml
+- import_tasks: users.yml
+- import_tasks: build.yml
+- import_tasks: packages.yml
+- import_tasks: chrony.yml
+- import_tasks: ps_mem.yml
+- import_tasks: utils.yml
+- import_tasks: node_exporter.yml
+  when: node_exporter_enabled

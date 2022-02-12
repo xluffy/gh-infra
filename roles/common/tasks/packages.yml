@@ -1,0 +1,47 @@
+#
+# update packages + remove unused packages
+#
+---
+- name: common | apt update & upgrade
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+    upgrade: 'safe'
+    autoremove: yes
+  tags:
+    - r_common_based
+    - r_common_pkgs
+
+- name: common | install necessary packages
+  apt:
+    name: "{{ install_packages }}"
+    state: present
+    install_recommends: no
+  changed_when: false
+  tags:
+    - r_common_based
+    - r_common_pkgs
+    - r_common_pkgs_test
+
+- name: common | uninstall packages
+  apt:
+    name: "{{ uninstall_packages }}"
+    state: absent
+    purge: yes
+  tags:
+    - r_common_based
+    - r_common_pkgs
+
+- name: common | auto upgrade package
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: "20auto-upgrades.j2", dest: "/etc/apt/apt.conf.d/20auto-upgrades" }
+    - { src: "50unattended-upgrades.j2", dest: "/etc/apt/apt.conf.d/50unattended-upgrades" }
+  tags:
+    - r_common_based
+    - r_common_pkgs

@@ -1,0 +1,35 @@
+{{ ansible_managed | comment }}
+
+###
+### IMPROVE SYSTEM MEMORY MANAGEMENT ###
+###
+
+# Increase size of file handles and inode cache
+fs.file-max = 209708
+
+# Do less swapping
+vm.swappiness = 1
+vm.dirty_ratio = 30
+vm.dirty_background_ratio = 5
+
+# specifies the minimum virtual address that a process is allowed to mmap
+vm.mmap_min_addr = 4096
+
+{% if inventory_hostname in groups.redis | default([]) or inventory_hostname in groups.keydb | default([]) %}
+vm.overcommit_memory = 1
+{% elif inventory_hostname in groups.postgres | default([]) %}
+# 80% overcommitment of available memory
+vm.overcommit_ratio = 80
+vm.overcommit_memory = 2
+{% elif inventory_hostname in groups.mongods | default([]) %}
+vm.overcommit_memory = 0
+{% else %}
+vm.overcommit_memory = 0
+{% endif %}
+
+# Set maximum amount of memory allocated to shm to 256MB
+kernel.shmmax = 268435456
+kernel.shmall = 268435456
+
+# Keep at least 128MB of free
+vm.min_free_kbytes = 131072

@@ -1,0 +1,22 @@
+extends: default
+ignore: |
+  .git
+  .github/**/*.yml
+  .yamllint
+  playbooks/*.yml
+  vault.yml
+  .yamllint
+
+rules:
+  braces:
+    min-spaces-inside: 1
+    max-spaces-inside: 1
+    level: error
+  indentation:
+    indent-sequences: whatever
+  brackets:
+    min-spaces-inside: 1
+    max-spaces-inside: 1
+    level: error
+  line-length: disable
+  truthy: disable

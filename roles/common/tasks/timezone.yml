@@ -1,0 +1,13 @@
+#
+# > timedatectl set-timezone Zone/SubZone
+# This will create a symlink that points to a zone info
+# https://wiki.archlinux.org/index.php/System_time#Time_zone
+#
+
+---
+- name: common | set timezone to UTC
+  timezone:
+    name: Etc/UTC
+  tags:
+    - r_common_based
+    - r_common_tz

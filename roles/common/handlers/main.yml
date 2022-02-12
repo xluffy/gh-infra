@@ -1,0 +1,58 @@
+---
+- name: systemd-reload
+  systemd:
+    daemon_reload: yes
+
+- name: restart systemd-sysctl service
+  systemd:
+    name: systemd-sysctl
+    state: restarted
+    enabled: yes
+
+- name: restart systemd-journald service
+  systemd:
+    name: systemd-journald
+    state: restarted
+    enabled: yes
+
+- name: enabled rc.local service
+  systemd:
+    name: rc-local
+    state: restarted
+    enabled: yes
+
+- name: restart rsyslog service
+  systemd:
+    name: rsyslog
+    state: restarted
+    enabled: yes
+
+- name: restart sshd service
+  systemd:
+    name: ssh
+    state: restarted
+    enabled: yes
+
+- name: restart chrony service
+  systemd:
+    name: chrony
+    state: restarted
+    enabled: yes
+
+- name: restart node_exporter service
+  systemd:
+    name: node_exporter
+    state: restarted
+    enabled: yes
+
+- name: restart uptimed service
+  systemd:
+    name: uptimed
+    state: restarted
+    enabled: yes
+
+- name: restart systemd-resolved service
+  systemd:
+    name: systemd-resolved
+    state: restarted
+    enabled: yes

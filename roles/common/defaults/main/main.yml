@@ -1,0 +1,106 @@
+---
+uninstall_packages:
+  - acpid
+  - at
+  - liblxc1
+  - lxc-common
+  - lxcfs
+  - lxd
+  - lvm2
+  - snapd
+
+install_packages:
+  - accountsservice
+  - acct
+  - apparmor
+  - apt-transport-https
+  - apt-utils
+  - aptitude
+  - autoconf
+  - automake
+  - bash-completion
+  - build-essential
+  - curl
+  - dialog
+  - dnsutils
+  - gcc
+  - git
+  - git-core
+  - htop
+  - iotop
+  - iputils-arping
+  - iputils-ping
+  - iputils-tracepath
+  - jq
+  - keychain
+  - libacl1-dev
+  - libaio1
+  - libaio-dev
+  - libbz2-dev
+  - libcurl4-openssl-dev
+  - libevent-dev
+  - libffi-dev
+  - libgdbm-dev
+  - liblzo2-dev
+  - libmcrypt-dev
+  - libncurses5-dev
+  - libpcre3
+  - libpcre3-dev
+  - libreadline6-dev
+  - libsqlite3-dev
+  - libssl-dev
+  - libtool
+  - libxml2-dev
+  - libxmlsec1-dev
+  - libyaml-dev
+  - "linux-tools-{{ ansible_kernel }}"
+  - linux-tools-common
+  - linux-tools-generic
+  - locales
+  - locate
+  - mdadm
+  - make
+  - man
+  - mtr-tiny
+  - nano
+  - ncdu
+  - net-tools
+  - ngrep
+  - ntpdate
+  - openjdk-8-jre-headless
+  - openssh-server
+  - pkg-config
+  - pv
+  - python3-software-properties
+  - python3-pip
+  - python3-setuptools
+  - python3-dev
+  - rsync
+  - software-properties-common
+  - secure-delete
+  - sqlite3
+  - sudo
+  - sysstat
+  - telnet
+  - tmux
+  - traceroute
+  - tree
+  - tzdata
+  - unattended-upgrades
+  - uptimed
+  - uuid-dev
+  - vim
+  - wget
+  - zlib1g-dev
+  - zfsutils-linux
+  - zip
+  - unzip
+
+bat_version: '0.19.0'
+bat_url: "https://github.com/sharkdp/bat/releases/download/v{{ bat_version }}/bat_{{ bat_version }}_amd64.deb"
+
+ripgrep_version: '13.0.0'
+ripgrep_url: "https://github.com/BurntSushi/ripgrep/releases/download/{{ ripgrep_version }}/ripgrep_{{ ripgrep_version }}_amd64.deb"
+
+fd_version: '8.3.1'
+fd_url: "https://github.com/sharkdp/fd/releases/download/v{{ fd_version }}/fd_{{ fd_version }}_amd64.deb"

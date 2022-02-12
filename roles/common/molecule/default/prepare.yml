@@ -1,0 +1,18 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  vars:
+    dep_packages:
+      - python3-setuptools
+      - python3-pip
+  tasks:
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python3.8-minimal --no-install-recommends)
+      become: true
+      changed_when: false
+
+    - name: Install python3 setuptools/pip
+      become: true
+      apt:
+        name: "{{ dep_packages }}"

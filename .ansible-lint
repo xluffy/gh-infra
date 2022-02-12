@@ -1,0 +1,5 @@
+---
+exclude_paths:
+  - defaults/main/vault.yml
+warn_list:
+  - yaml

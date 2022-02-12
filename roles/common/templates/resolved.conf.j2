@@ -1,0 +1,17 @@
+{{ ansible_managed | comment }}
+
+# systemd-resolved doesn't support cache-max-ttl like Unbound, this config will
+# hard code at https://github.com/systemd/systemd/blob/master/src/resolve/resolved-dns-cache.c#L19
+# Default, with Ubuntu 18.04 on AWS:
+#   - systemd-resolved is enable
+#   - systemd-resolved point to AWS DNS internal
+#   - /etc/resolve.conf point to 127.0.0.53 (to systemd-resolved)
+
+[Resolve]
+DNS=1.1.1.1
+FallbackDNS=8.8.8.8
+LLMNR=no
+DNSSEC=no
+MulticastDNS=no
+Cache=yes
+DNSStubListener=yes

@@ -1,0 +1,13 @@
+{{ ansible_managed | comment }}
+
+// Enable unattended upgrades.
+APT::Periodic::Update-Package-Lists "1";
+
+// Do "apt-get upgrade --download-only" every n-days (0=disable).
+APT::Periodic::Download-Upgradeable-Packages "1";
+
+// Do "apt-get upgrade" every n-days (0=disable).
+APT::Periodic::Unattended-Upgrade "3";
+
+// Do "apt-get autoclean" every n-days (0=disable).
+APT::Periodic::AutocleanInterval "9";

@@ -1,0 +1,14 @@
+---
+- name: common | copy bash aliases/vimrc config for root user
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: "bash_aliases.j2", dest: "/root/.bash_aliases" }
+    - { src: "vimrc.j2", dest: "/root/.vimrc" }
+  tags:
+    - r_common_based
+    - r_common_users

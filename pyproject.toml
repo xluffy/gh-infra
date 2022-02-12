@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "gh-infra"
+version = "0.1.0"
+description = "Ansible demo"
+authors = ["xluffy <hi.quang.gg@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+ansible = "2.9.27"
+ansible-lint = "^5.3.2"
+flake8 = "^4.0.1"
+yamllint = "^1.26.3"
+prettytable = "^3.0.0"
+cryptography = "^36.0.1"
+pytest = "^6.2.5"
+black = "^21.12b0"
+molecule = "3.5.2"
+mitogen = "0.2.9"
+yamlfix = "^0.8.0"
+molecule-vagrant = "^1.0.0"
+autopep8 = "^1.6.0"
+pytest-testinfra = "^6.5.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

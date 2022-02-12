@@ -1,0 +1,18 @@
+[gh_prod_mysqls]
+gh-prod-mysql-master-01 ansible_host=10.20.30.41
+gh-prod-mysql-slave-01 ansible_host=10.20.31.41
+gh-prod-mysql-delayed-01 ansible_host=10.20.32.41
+
+[gh_prod_redis]
+gh-prod-redis-queue-01 ansible_host=10.20.30.51
+gh-prod-redis-caching-01 ansible_host=10.20.31.51
+
+[all:children]
+mysql
+redis
+
+[mysql:children]
+gh_prod_mysqls
+
+[redis:children]
+gh_prod_redis

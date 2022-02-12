@@ -1,0 +1,42 @@
+#
+# Install some utils for boosting productivity
+#
+
+---
+- name: common | install bat - a cat clone
+  apt:
+    deb: "{{ bat_url }}"
+    state: present
+    install_recommends: no
+  tags:
+    - r_common_based
+    - r_common_utils
+
+- name: common | install ripgrep - a replace grep
+  apt:
+    deb: "{{ ripgrep_url }}"
+    state: present
+    install_recommends: no
+  tags:
+    - r_common_based
+    - r_common_utils
+
+- name: common | install fd simple, fast and user-friendly alternative to find
+  apt:
+    deb: "{{ fd_url }}"
+    state: present
+    install_recommends: no
+  tags:
+    - r_common_based
+    - r_common_utils
+
+- name: common | util tool for bench dns
+  copy:
+    src: bench-local-dns
+    dest: /usr/local/bin/bench-local-dns
+    owner: root
+    group: root
+    mode: 0755
+  tags:
+    - r_common_based
+    - r_common_utils

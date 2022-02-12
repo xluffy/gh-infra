@@ -1,0 +1,15 @@
+#
+# ps_mem: A utility to accurately report the in core memory usage for a program
+# https://github.com/pixelb/ps_mem
+
+---
+- name: common | install ps_mem
+  get_url:
+    url: https://raw.githubusercontent.com/pixelb/ps_mem/master/ps_mem.py
+    dest: /usr/local/bin/ps_mem
+    mode: 0755
+    owner: root
+    group: root
+  tags:
+    - r_common_based
+    - r_common_psmem

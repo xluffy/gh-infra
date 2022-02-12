@@ -1,0 +1,17 @@
+#
+# Locales are used by glibc for rendering text, correctly displaying
+# regional monetary values, time and date formats,
+# alphabetic idiosyncrasies
+# https://wiki.archlinux.org/index.php/locale
+#
+---
+- name: common | config locale
+  template:
+    src: locale.j2
+    dest: /etc/default/locale
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - r_common_based
+    - r_common_locale

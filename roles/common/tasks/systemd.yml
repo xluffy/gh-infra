@@ -1,0 +1,28 @@
+#
+# Systemd: https://wiki.archlinux.org/index.php/Systemd
+#
+
+---
+- name: common | config systemd system
+  template:
+    src: system.conf.j2
+    dest: /etc/systemd/system.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: systemd-reload
+  tags:
+    - r_common_based
+    - r_common_systemd
+
+- name: common | config systemd user
+  template:
+    src: user.conf.j2
+    dest: /etc/systemd/user.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: systemd-reload
+  tags:
+    - r_common_based
+    - r_common_systemd

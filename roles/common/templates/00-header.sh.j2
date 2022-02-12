@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# Custom: @xluffy
+#
+
+{{ ansible_managed | comment }}
+
+[ -r /etc/lsb-release ] && . /etc/lsb-release
+
+if [ -z "$DISTRIB_DESCRIPTION" ] && [ -x /usr/bin/lsb_release ]; then
+  DISTRIB_DESCRIPTION=$(lsb_release -s -d)
+fi
+
+[ -r /etc/hostname ] && figlet -w 140 < /etc/hostname
+  printf "Welcome to %s (%s %s %s)\n" "$DISTRIB_DESCRIPTION" "$(uname -o)" "$(uname -r)" "$(uname -m)"
+echo
+
+[ -r /etc/motd-warning ] && cat /etc/motd-warning

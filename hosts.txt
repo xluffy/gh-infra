@@ -1,0 +1,12 @@
+/Library/Developer/CommandLineTools/usr/bin/make ansible/hosts
+@all:
+  |--@mysql:
+  |  |--@gh_prod_mysqls:
+  |  |  |--gh-prod-mysql-delayed-01
+  |  |  |--gh-prod-mysql-master-01
+  |  |  |--gh-prod-mysql-slave-01
+  |--@redis:
+  |  |--@gh_prod_redis:
+  |  |  |--gh-prod-redis-caching-01
+  |  |  |--gh-prod-redis-queue-01
+  |--@ungrouped:

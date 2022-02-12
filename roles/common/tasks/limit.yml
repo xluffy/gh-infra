@@ -1,0 +1,45 @@
+#
+# Note: /etc/security/limits.conf  does not affect system services.
+# For systemd service the files /etc/systemd/{system.conf,user.conf} or
+# /etc/systemd/<systemd_unit>/override.conf control the limit
+# https://wiki.archlinux.org/index.php/Limits.conf
+#
+
+---
+- name: common | configuration ulimit soft
+  pam_limits:
+    domain: '*'
+    limit_type: soft
+    limit_item: nofile
+    value: '65535'
+  tags:
+    - r_common_based
+    - r_common_limit
+
+- name: common | configuration ulimit hard
+  pam_limits:
+    domain: '*'
+    limit_type: hard
+    limit_item: nofile
+    value: '65535'
+  tags:
+    - r_common_based
+    - r_common_limit
+
+#
+# Disabling automatic core dumps for:
+#   - performance
+#   - disk space
+#   - security
+# https://wiki.archlinux.org/index.php/Core_dump
+#
+
+- name: common | disable coredump at ulimit
+  pam_limits:
+    domain: '*'
+    limit_type: hard
+    limit_item: core
+    value: '0'
+  tags:
+    - r_common_based
+    - r_common_limit

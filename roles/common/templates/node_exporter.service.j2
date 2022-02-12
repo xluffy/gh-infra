@@ -1,0 +1,27 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=node_exporter
+Group=node_exporter
+EnvironmentFile=/etc/default/node_exporter
+ExecStart=/usr/local/bin/node_exporter $ARGS
+
+SyslogIdentifier=node_exporter
+Restart=always
+
+PrivateTmp=yes
+ProtectHome=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=yes
+
+[Install]
+WantedBy=multi-user.target

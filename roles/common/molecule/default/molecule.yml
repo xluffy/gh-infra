@@ -1,0 +1,39 @@
+---
+dependency:
+  name: galaxy
+  enabled: false
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint: |
+  set -e
+  yamllint .
+  ansible-lint --exclude molecule
+  flake8
+platforms:
+  - name: vg-ubuntu-2004-common
+    box: ubuntu/focal64
+    memory: 1280
+    groups:
+      - common
+provisioner:
+  name: ansible
+  log: true
+  config_options:
+    defaults:
+      vault_password_file: ${MOLECULE_SCENARIO_DIRECTORY}/.vault_pass
+      callback_whitelist: profile_tasks, timer
+      stdout_callback: debug
+      gathering: smart
+    ssh_connection:
+      pipelining: true
+      control_path: /tmp/ansible-ssh-%%h-%%p-%%r
+scenario:
+  name: default
+verifier:
+  name: testinfra
+  additional_files_or_dirs:
+    - ./tests/test_default.py
+  options:
+    vvv: true
